@@ -1,0 +1,12 @@
+<div class="p-grid">
+  <div class="p-col-4">
+    <img [src]="recipe.imagePath" class="imageItem" [alt]="recipe.name">
+  </div>
+  <div class="p-col-8">
+    <div class="p-grid">
+      <div class="p-col-12">Name: <b>{{ recipe.name }}</b></div>
+      <div class="p-col-12">Description: <b>{{ recipe.description }}</b></div>
+    </div>
+    <button pButton type="button" icon="pi pi-search" [routerLink]="[index]"></button>
+  </div>
+</div>

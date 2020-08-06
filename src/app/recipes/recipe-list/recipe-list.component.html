@@ -1,0 +1,19 @@
+<div class="p-col">
+  <button pButton type="button" label="New Recipe" class="ui-button-success" (click)="onNewRecipe()"></button>
+</div>
+<div class="p-col">
+  <p-dataView [value]="recipes" [paginator]="true" [rows]="5">
+    <p-header>
+      <div>
+        <div class="p-grid">
+          <div class="p-col p-col-align-center">
+            Recipes
+          </div>
+        </div>
+      </div>
+    </p-header>
+    <ng-template let-recipe let-i="rowIndex" pTemplate="listItem">
+      <app-recipe-item [recipe]="recipe" [index]="i"></app-recipe-item>
+    </ng-template>
+  </p-dataView>
+</div>

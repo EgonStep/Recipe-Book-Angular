@@ -1,0 +1,24 @@
+<div class="p-gri">
+  <div class="p-col" >
+    <img class="imageSize" [src]="recipe.imagePath" alt="{{ recipe.imagePath }}">
+  </div>
+  <div class="p-col">
+    <h1>{{ recipe.name }}</h1>
+  </div>
+  <div class="p-col">
+    <!-- <p-dropdown [options]="managerItems" [(ngModel)]="selectManager" placeholder="Manager" (onChange)="onOptionSelect($event)"></p-dropdown> -->
+    <button class="ui-button-success" pButton (click)="addToShoppingList()">Add Shopping List</button>
+    <button class="ui-button-info margin" pButton (click)="onEditRecipe()">Edit Recipe</button>
+    <button class="ui-button-danger margin" pButton>Delete Recipe</button>
+  </div>
+</div>
+<div class="p-col">
+   {{ recipe.description }}
+</div>
+<div class="p-col">
+  <p-orderList [value]="recipe.ingredients" [metaKeySelection]="false" (onSelectionChange)="onOptionSelect($event.value)">
+    <ng-template let-ingredient pTemplate="item">
+        {{ingredient.name}} - {{ingredient.amount}}
+    </ng-template>
+</p-orderList>
+</div>

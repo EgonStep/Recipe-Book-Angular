@@ -1,0 +1,14 @@
+<div class="p-grid">
+  <div class="p-col">
+    <app-shopping-edit></app-shopping-edit>
+    <hr>
+    <p-listbox [options]="ingredients" styleClass="listBox">
+      <ng-template let-ingredient pTemplate="item">
+        <div>
+          <img src="">
+          <span>{{ ingredient.name }} ({{ ingredient.amount }})</span>
+        </div>
+      </ng-template>
+    </p-listbox>
+  </div>
+</div>
