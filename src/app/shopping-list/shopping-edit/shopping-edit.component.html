@@ -1,18 +1,17 @@
 <div class="p-grid">
   <div class="p-col-6">
-    <form class="p-fluid p-formgrid p-grid">
+    <form class="p-fluid p-formgrid p-grid" [formGroup]="shoppingForm" (ngSubmit)="onSubmit()">
       <div>
           <label for="name">Name</label>
-          <input id="name" type="text" pInputText #nameInput>
+          <input id="name" type="text" pInputText formControlName="name">
       </div>
       <div class="margin">
           <label for="amount">Amount</label>
-          <input id="amount" type="number" pInputText #amountInput>
+          <input id="amount" type="number" pInputText formControlName="amount">
       </div>
+      <button pButton type="submit" [label]="editMode ? 'Update' : 'Add'" class="ui-button-success margin" [disabled]="!shoppingForm.valid"></button>
+      <button pButton type="button" label="Delete" class="ui-button-danger margin" [disabled]="!editMode" (click)="onDelete()"></button>
+      <button pButton type="button" label="Clear" class="ui-button-info margin" (click)="onReset()"></button>
     </form>
-    <br>
-    <button pButton type="button" label="Add" class="ui-button-success" (click)="addIngredient()"></button>
-    <button pButton type="button" label="Delete" class="ui-button-danger margin"></button>
-    <button pButton type="button" label="Clear" class="ui-button-info margin"></button>
   </div>
 </div>

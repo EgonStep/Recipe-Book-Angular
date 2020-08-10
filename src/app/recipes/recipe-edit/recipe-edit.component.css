@@ -1,0 +1,11 @@
+.margin {
+  margin-left: 7px;
+}
+
+.row {
+  margin-top: 5px;
+}
+
+.img-responsive {
+  max-height: 150px;
+}
