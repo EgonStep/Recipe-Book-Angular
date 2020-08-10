@@ -48,6 +48,10 @@ export class RecipeDetailComponent implements OnInit {
   }
 
   addToShoppingList() {
+    if (!this.ingredients) {
+      window.alert('Before adding to shopping list, select at least one ingredient!');
+      return;
+    }
     this.recipeService.addIngredientsToShoppingList(this.ingredients);
   }
 
@@ -57,5 +61,10 @@ export class RecipeDetailComponent implements OnInit {
 
   onEditRecipe() {
     this.router.navigate(['../', this.id, 'edit'], {relativeTo: this.route});
+  }
+
+  onDelete() {
+    this.recipeService.deleteRecipe(this.id);
+    this.router.navigate(['/recipes']);
   }
 }
