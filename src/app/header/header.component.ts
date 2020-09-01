@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/api/menuitem';
+import { DataStorageService } from '../shared/services/data-storage.service';
 
 @Component({
   templateUrl: './header.component.html',
@@ -25,12 +26,24 @@ export class HeaderComponent {
       label: 'Manage',
       items: [
         {
-          label: 'Save Data'
+          label: 'Save Data',
+          command: () => this.onSaveData()
         },
         {
-          label: 'Fetch Data'
+          label: 'Fetch Data',
+          command: () => this.onFetchRecipes()
         }
       ]
     }
   ];
+
+  constructor(private readonly dataStorageService: DataStorageService) { }
+
+  onSaveData() {
+    this.dataStorageService.storeRecipes();
+  }
+
+  onFetchRecipes() {
+    this.dataStorageService.fetchRecipes().subscribe();
+  }
 }

@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
@@ -23,6 +24,18 @@ import { ShoppingListService } from './shopping-list/shopping-list.service';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeService } from './recipes/recipe.service';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
+import { DataStorageService } from './shared/services/data-storage.service';
+import { RecipesResolverService } from './recipes/recipes-resolver.service';
+
+const primeNgImports = [
+  InputTextModule,
+  ButtonModule,
+  MenubarModule,
+  DataViewModule,
+  DropdownModule,
+  ListboxModule,
+  OrderListModule
+]
 
 @NgModule({
   declarations: [
@@ -41,18 +54,15 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
     BrowserModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    InputTextModule,
-    ButtonModule,
-    MenubarModule,
-    DataViewModule,
-    DropdownModule,
-    ListboxModule,
-    OrderListModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    primeNgImports
   ],
   providers: [
     ShoppingListService,
-    RecipeService
+    RecipeService,
+    RecipesResolverService,
+    DataStorageService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

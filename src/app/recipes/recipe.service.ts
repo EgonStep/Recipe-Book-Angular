@@ -9,40 +9,14 @@ export class RecipeService {
 
   recipesChanged = new Subject<Recipe[]>();
 
-  private recipes: Recipe[] = [
-    {
-      name: 'A Test Recipe',
-      description: 'This is simply a test',
-      imagePath: 'https://cdn.pixabay.com/photo/2016/06/15/19/09/food-1459693_960_720.jpg',
-      ingredients: [
-        {
-          name: 'Meat',
-          amount: 1
-        },
-        {
-          name: 'Salad',
-          amount: 2
-        }
-      ]
-    },
-    {
-      name: 'New Recipe',
-      description: 'This is a new recipe',
-      imagePath: 'https://cdn.pixabay.com/photo/2017/02/15/10/39/salad-2068220_960_720.jpg',
-      ingredients: [
-        {
-          name: 'Tomato',
-          amount: 2
-        },
-        {
-          name: 'Cheese',
-          amount: 1
-        }
-      ]
-    }
-  ];
+  private recipes: Recipe[] = [];
 
   constructor(private shoppingService: ShoppingListService) {}
+
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
   getRecipes() {
     return this.recipes.slice();
