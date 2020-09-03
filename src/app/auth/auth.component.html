@@ -1,0 +1,26 @@
+<div class="p-col">
+  <div *ngIf="error.length > 0">
+    <p-messages [(value)]="error" [closable]="false"></p-messages>
+  </div>
+  <div *ngIf="isLoading">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+  <form [formGroup]="authForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+    <div class="p-field p-grid">
+      <label for="email" class="p-col-fixed" style="width:100px">Email</label>
+      <div class="p-col">
+          <input id="email" type="email" pInputText formControlName="email">
+      </div>
+    </div>
+    <div class="p-field p-grid">
+      <label for="password" class="p-col-fixed" style="width:100px">Password</label>
+      <div class="p-col">
+          <input id="password" type="password" pInputText formControlName="password">
+      </div>
+    </div>
+    <div class="p-field p-grid">
+      <button pButton pRipple type="submit" label="{{ isLoginMode ? 'Login' : 'Sign Up' }}" [disabled]="!authForm.valid"></button>
+      <button pButton pRipple type="button" class="btnAuth" label="Switch to {{ !isLoginMode ? 'Login' : 'Sign Up' }}" (click)="onSwitchMode()"></button>
+    </div>
+  </form>
+</div>
