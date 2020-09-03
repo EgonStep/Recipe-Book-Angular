@@ -4,7 +4,11 @@ import { AuthComponent } from './auth/auth.component';
 
 const appRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/recipes' },
-  { path: 'auth', component: AuthComponent }
+  { path: 'auth', component: AuthComponent },
+
+  // Enable lazy loading for recipes. Only load when the user visits the recipes page
+  // { path: 'recipes', loadChildren: './recipes/recipes.module.ts#RecipesModule' }, // Old Version
+  { path: 'recipes', loadChildren: () => import('./recipes/recipes.module').then(module => module.RecipesModule) },
 ];
 
 @NgModule({
