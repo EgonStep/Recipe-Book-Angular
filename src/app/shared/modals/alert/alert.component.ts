@@ -7,6 +7,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export class AlertComponent {
 
+
   @Input() header: string;
   @Input() message: string;
   @Input() display: boolean;
