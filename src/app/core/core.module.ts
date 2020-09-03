@@ -26,3 +26,5 @@ import { AuthGuard } from '../auth/auth.guard';
 export class CoreModule { }
 
 // Core Module maintain the App's services
+// Instead of using a module to track all the services.
+// A better approach is to use @Injectable({providedIn: 'root'}) on each service
