@@ -11,7 +11,6 @@ import { AuthComponent } from './auth/auth.component';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { ShoppingListModule } from './shopping-list/shopping-list.module';
-import { RecipesModule } from './recipes/recipes.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +25,6 @@ import { RecipesModule } from './recipes/recipes.module';
     AppRoutingModule,
     HttpClientModule,
     ShoppingListModule,
-    RecipesModule,
     SharedModule,
     CoreModule
   ],
