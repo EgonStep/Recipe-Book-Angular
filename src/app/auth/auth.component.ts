@@ -14,7 +14,7 @@ export class AuthComponent implements OnInit {
   isLoginMode = true;
   isLoading = false;
   authForm: FormGroup;
-  error = [];
+  error = null;
 
   constructor(
     private readonly authService: AuthService,
@@ -59,12 +59,15 @@ export class AuthComponent implements OnInit {
       console.log(response);
       this.isLoading = false;
       this.router.navigate(['recipes']);
-      this.error = [];
     }, errorMessage => {
-      this.error = [{severity:'error', summary:'Error', detail: errorMessage}];
+      this.error = errorMessage;
       this.isLoading = false;
     });
 
     this.authForm.reset();
+  }
+
+  onModalClose() {
+    this.error = null;
   }
 }

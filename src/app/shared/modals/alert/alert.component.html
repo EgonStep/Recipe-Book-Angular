@@ -1,0 +1,9 @@
+<p-dialog [(visible)]="display" [style]="{width: '50vw'}">
+  <p-header>
+    {{ header }}
+  </p-header>
+  {{ message }}
+  <p-footer>
+    <button pButton pRipple type="submit" label="Close" (click)="onClose()"></button>
+  </p-footer>
+</p-dialog>

@@ -1,7 +1,4 @@
 <div class="p-col">
-  <div *ngIf="error.length > 0">
-    <p-messages [(value)]="error" [closable]="false"></p-messages>
-  </div>
   <div *ngIf="isLoading">
     <app-loading-spinner></app-loading-spinner>
   </div>
@@ -24,3 +21,5 @@
     </div>
   </form>
 </div>
+
+<app-alert header="Login Failed" [message]="error" [display]="error" (close)="onModalClose()"></app-alert>
