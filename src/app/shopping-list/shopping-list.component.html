@@ -2,7 +2,7 @@
   <div class="p-col">
     <app-shopping-edit></app-shopping-edit>
     <hr>
-    <p-listbox [options]="ingredients" styleClass="listBox">
+    <p-listbox [options]="(ingredients | async).ingredients" styleClass="listBox">
       <ng-template let-ingredient let-i="index" pTemplate="item">
         <div (click)="onSelect(i)">
           <img src="">
