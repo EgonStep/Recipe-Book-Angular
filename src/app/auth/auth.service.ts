@@ -5,6 +5,8 @@ import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { User } from '../shared/models/user.model';
 
+import { environment } from '../../environments/environment';
+
 // Firebase response data
 export interface AuthResponseData {
   idToken: string,
@@ -31,7 +33,7 @@ export class AuthService {
   // https://jwt.io/
   signUp(email: string, password: string): Observable<AuthResponseData> {
     return this.http.post<AuthResponseData>(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyATac6jhsxseNcfLNTfCWzqQMQQFCbgEAI',
+      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + environment.firebaseApiKey,
       {
         email: email,
         password: password,
@@ -46,7 +48,7 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.http.post<AuthResponseData>(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyATac6jhsxseNcfLNTfCWzqQMQQFCbgEAI',
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + environment.firebaseApiKey,
       {
         email: email,
         password: password,
