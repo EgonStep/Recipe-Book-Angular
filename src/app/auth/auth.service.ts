@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { User } from '../shared/models/user.model';
 
 import { environment } from '../../environments/environment';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../store/app.reducer';
+import * as AuthActions from './store/auth.actions';
 
-// Firebase response data
+
 export interface AuthResponseData {
   idToken: string,
   email: string,
@@ -20,17 +23,13 @@ export interface AuthResponseData {
 @Injectable()
 export class AuthService {
 
-  // BehaviorSubject gives subscribers immediate access to the previously emitted value even if they haven't
-  // subscribed at the point of time that value was emitted.
-  user = new BehaviorSubject<User>(null); // Init with null
-
   private tokenExpirationTimer: any;
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(
+    private readonly http: HttpClient,
+    private readonly store: Store<fromApp.AppState>
+  ) { }
 
-  // Firebase email/password auth docs
-  // https://firebase.google.com/docs/reference/rest/auth#section-sign-in-email-password
-  // https://jwt.io/
   signUp(email: string, password: string): Observable<AuthResponseData> {
     return this.http.post<AuthResponseData>(
       'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + environment.firebaseApiKey,
@@ -39,7 +38,8 @@ export class AuthService {
         password: password,
         returnSecureToken: true
       }
-    ).pipe(
+    )
+    .pipe(
       catchError(this.handleError),
       tap(respData => {
         this.handleAuthentication(respData.email, respData.localId, respData.idToken, +respData.expiresIn)
@@ -54,7 +54,8 @@ export class AuthService {
         password: password,
         returnSecureToken: true
       }
-    ).pipe(
+    )
+    .pipe(
       catchError(this.handleError),
       tap( respData => {
         this.handleAuthentication(respData.email, respData.localId, respData.idToken, +respData.expiresIn)
@@ -62,7 +63,7 @@ export class AuthService {
   }
 
   logout() {
-    this.user.next(null);
+    this.store.dispatch(new AuthActions.Logout());
     localStorage.removeItem('userData');
 
     if (this.tokenExpirationTimer) {
@@ -87,7 +88,13 @@ export class AuthService {
     const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate));
 
     if (loadedUser.token) {
-      this.user.next(loadedUser);
+      this.store.dispatch(new AuthActions.AuthenticateSuccess({
+        email: loadedUser.email,
+        userId: loadedUser.id,
+        token: loadedUser.token,
+        expirationDate: new Date(userData._tokenExpirationDate)
+      }));
+
       const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
       this.timeoutUserFromLocalStorage(expirationDuration);
     }
@@ -120,15 +127,17 @@ export class AuthService {
   }
 
   private handleAuthentication(email: string, userId: string, token: string, expiresIn: number) {
-    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000); // Converto to milliseconds
-    const user = new User(
-      email, userId, token, expirationDate
-    );
+    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+    const user = new User(email, userId, token, expirationDate);
 
-    this.user.next(user);
+    this.store.dispatch(new AuthActions.AuthenticateSuccess({
+      email,
+      userId,
+      token,
+      expirationDate
+    }));
+
     this.timeoutUserFromLocalStorage(expiresIn * 1000);
-
-    // Store the user authentication on Browser's localStorage to prevent losing the data when refreshing the page
     localStorage.setItem('userData', JSON.stringify(user));
   }
 }

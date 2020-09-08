@@ -3,6 +3,9 @@ import { MenuItem } from 'primeng/api/menuitem';
 import { DataStorageService } from '../shared/services/data-storage.service';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../store/app.reducer';
+import { map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './header.component.html',
@@ -60,12 +63,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly dataStorageService: DataStorageService,
+    private readonly store: Store<fromApp.AppState>,
     private readonly authService: AuthService
   ) { }
 
   ngOnInit(): void {
-    this.userSub = this.authService.user.subscribe(user => {
-      // this.isAuthenticated = !user ? false : true;
+    // Return the user object using map operator
+    this.userSub = this.store.select('auth').pipe(map(authState => authState.user)).subscribe(user => {
       this.isAuthenticated = !!user;
       this.showHeadersOnAuth();
     });

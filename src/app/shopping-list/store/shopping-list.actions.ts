@@ -3,14 +3,14 @@ import { Ingredient } from 'src/app/shared/models/ingredient.models';
 
 
 /** Ingredient's Behaviors */
-export const ADD_INGREDIENT = 'ADD_INGREDIENT';
-export const ADD_INGREDIENTS = 'ADD_INGREDIENTS';
-export const UPDATE_INGREDIENT = 'UPDATE_INGREDIENT';
-export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
+export const ADD_INGREDIENT = '[Shopping List] Add Ingredient'; //[Feature Name] and what will do. This is to have unique action on entire application.
+export const ADD_INGREDIENTS = '[Shopping List] Add Ingredients';
+export const UPDATE_INGREDIENT = '[Shopping List] Update Ingredient';
+export const DELETE_INGREDIENT = '[Shopping List] Delete Ingredient';
 
 /** Edit Mode */
-export const START_EDIT = 'START_EDIT';
-export const STOP_EDIT = 'STOP_EDIT';
+export const START_EDIT = '[Shopping List] Start Edit';
+export const STOP_EDIT = '[Shopping List] Stop Edit';
 
 
 export class AddIngredient implements Action {

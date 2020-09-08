@@ -1,21 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from './auth.service';
-import { take, exhaustMap } from 'rxjs/operators';
+import { take, exhaustMap, map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../store/app.reducer';
+
 
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
 
-  constructor(private readonly authService: AuthService) { }
+  constructor(
+    private readonly store: Store<fromApp.AppState>
+  ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Make sure to get the user only once, using rxjs 'take' method. It'll unsubscribe automatically.
-    // Using rxjs 'exhaustMap' means that we will return the http observable after the user observable is completed.
-    return this.authService.user.pipe(
+    return this.store.select('auth').pipe(
       take(1),
+      map(authState => {
+        return authState.user;
+      }),
       exhaustMap(user => {
-        // If we don't have the user login, just send the original request
         if (!user) {
           return next.handle(req);
         }
