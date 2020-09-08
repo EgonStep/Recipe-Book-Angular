@@ -8,10 +8,6 @@ export interface State {
   editedIngredientIndex: number;
 }
 
-export interface AppState {
-  shoppingList: State;
-}
-
 const initialState: State = {
   ingredients: [
     {
@@ -27,6 +23,7 @@ const initialState: State = {
   editedIngredientIndex: -1
 };
 
+// state = initialState when the shoppingListReducer is created
 export function shoppingListReducer(state: State = initialState, action: ShoppingListActions.AllowActions) {
   switch(action.type) {
     case ShoppingListActions.ADD_INGREDIENT:

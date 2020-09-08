@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Ingredient } from '../shared/models/ingredient.models';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import * as fromShoppingList from './store/shopping-list.reducer';
 import * as ShoppingListActions from './store/shopping-list.actions';
-
+import * as fromApp from '../store/app.reducer';
 
 @Component({
   selector: 'app-shopping-list',
@@ -18,7 +17,7 @@ export class ShoppingListComponent implements OnInit {
   selectedIngredient: Ingredient;
 
   constructor(
-    private store: Store<fromShoppingList.AppState>
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit(): void {
