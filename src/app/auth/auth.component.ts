@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AuthService, AuthResponseData } from './auth.service';
-import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../store/app.reducer';
 import * as AuthActions from './store/auth.actions';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -13,26 +11,30 @@ import * as AuthActions from './store/auth.actions';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
 
   isLoginMode = true;
   isLoading = false;
   authForm: FormGroup;
   error = null;
 
+  private storeSub: Subscription;
+
   constructor(
-    private readonly authService: AuthService,
-    private readonly router: Router,
     private readonly store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit(): void {
-    this.store.select('auth').subscribe(authState => {
+    this.storeSub = this.store.select('auth').subscribe(authState => {
       this.isLoading = authState.loading;
       this.error = authState.authError;
     });
 
     this.initForm();
+  }
+
+  ngOnDestroy(): void {
+    this.storeSub.unsubscribe();
   }
 
   onSwitchMode() {
@@ -56,20 +58,20 @@ export class AuthComponent implements OnInit {
 
     this.isLoading = true;
 
-    let authObs: Observable<AuthResponseData>;
-
     if (this.isLoginMode) {
       this.store.dispatch(
-        new AuthActions.LoginStart({email: email, password: password})
+        new AuthActions.LoginStart({email, password})
       );
     } else {
-      authObs = this.authService.signUp(email, password);
+      this.store.dispatch(
+        new AuthActions.SignupStart({email, password})
+      );
     }
 
     this.authForm.reset();
   }
 
   onModalClose() {
-    this.error = null;
+    this.store.dispatch(new AuthActions.ClearError());
   }
 }

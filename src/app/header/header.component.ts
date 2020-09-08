@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../store/app.reducer';
 import { map } from 'rxjs/operators';
+import * as AuthActions from '../auth/store/auth.actions';
+
 
 @Component({
   templateUrl: './header.component.html',
@@ -43,7 +45,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       routerLink: ['/auth'],
       routerLinkActiveOptions: 'active',
       visible: this.isAuthenticated,
-      command: () => this.authService.logout()
+      command: () => this.store.dispatch(new AuthActions.Logout())
     },
     {
       label: 'Manage',
