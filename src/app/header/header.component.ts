@@ -1,12 +1,11 @@
 import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { MenuItem } from 'primeng/api/menuitem';
-import { DataStorageService } from '../shared/services/data-storage.service';
-import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../store/app.reducer';
 import { map } from 'rxjs/operators';
 import * as AuthActions from '../auth/store/auth.actions';
+import * as RecipeActions from '../recipes/store/recipe.actions';
 
 
 @Component({
@@ -53,20 +52,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
       items: [
         {
           label: 'Save Data',
-          command: () => this.dataStorageService.storeRecipes()
+          command: () => this.store.dispatch(new RecipeActions.StoreRecipes())
         },
         {
           label: 'Fetch Data',
-          command: () => this.dataStorageService.fetchRecipes().subscribe()
+          command: () => this.store.dispatch(new RecipeActions.FetchRecipes())
         }
       ]
     }
   ];
 
   constructor(
-    private readonly dataStorageService: DataStorageService,
-    private readonly store: Store<fromApp.AppState>,
-    private readonly authService: AuthService
+    private readonly store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit(): void {
